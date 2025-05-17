@@ -113,6 +113,7 @@ class TradeSignal(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     executed: bool = False
     result: Optional[str] = None  # "WIN", "LOSS", or None if not yet determined
+    account_type: Optional[str] = "Demo"  # "Demo" or "Real"
 
 # ------ Helper Functions ------
 
