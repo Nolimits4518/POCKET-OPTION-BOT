@@ -543,24 +543,271 @@ async def tradingview_webhook(user_id: str, request: Request):
             content={"error": str(e)}
         )
 
-@api_router.get("/trading/history", response_model=List[TradeSignal])
-async def trading_history(
-    current_user: User = Depends(get_current_active_user),
-    limit: int = 50
+@api_router.get("/account/balance/{account_id}")
+async def get_account_balance(
+    account_id: str,
+    current_user: User = Depends(get_current_active_user)
 ):
-    # Get accounts belonging to user
-    accounts = await db.pocket_option_accounts.find(
-        {"user_id": current_user.id}
-    ).to_list(100)
+    """
+    Get account balance for a Pocket Option account
+    This is a simulated balance as we don't have actual API access
+    """
+    # Check if account exists and belongs to user
+    account = await db.pocket_option_accounts.find_one({
+        "id": account_id, 
+        "user_id": current_user.id
+    })
     
+    if not account:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Account not found",
+        )
+    
+    # Get trade history for this account
+    trades = await db.trade_signals.find({"account_id": account_id}).to_list(1000)
+    
+    # Calculate metrics
+    total_trades = len(trades)
+    winning_trades = sum(1 for trade in trades if trade.get("result") == "WIN")
+    losing_trades = sum(1 for trade in trades if trade.get("result") == "LOSS")
+    pending_trades = total_trades - winning_trades - losing_trades
+    
+    # Generate a random balance (for demo purposes)
+    balance = 1000 + (winning_trades * 100) - (losing_trades * 80)
+    if account["username"] == "newroyalsinc@gmail.com":
+        # Give a nicer balance to the demo account
+        balance = 2500 + (winning_trades * 150) - (losing_trades * 50)
+    
+    return {
+        "account_id": account_id,
+        "balance": balance,
+        "currency": "USD",
+        "total_trades": total_trades,
+        "winning_trades": winning_trades,
+        "losing_trades": losing_trades,
+        "pending_trades": pending_trades,
+        "win_rate": winning_trades / total_trades if total_trades > 0 else 0,
+        "account_type": "Demo" if account.get("is_demo", True) else "Real"
+    }
+
+@api_router.get("/trading/metrics")
+async def get_trading_metrics(
+    current_user: User = Depends(get_current_active_user)
+):
+    """
+    Get detailed trading metrics for charts and analysis
+    """
+    # Get user's accounts
+    accounts = await db.pocket_option_accounts.find({"user_id": current_user.id}).to_list(100)
     account_ids = [account["id"] for account in accounts]
     
-    # Get trade history for user's accounts
-    trades = await db.trade_signals.find(
-        {"account_id": {"$in": account_ids}}
-    ).sort("created_at", -1).limit(limit).to_list(limit)
+    # Get all trades for these accounts
+    all_trades = await db.trade_signals.find({"account_id": {"$in": account_ids}}).to_list(1000)
     
-    return trades
+    # Calculate metrics
+    total_trades = len(all_trades)
+    if total_trades == 0:
+        return {
+            "metrics": {
+                "total_trades": 0,
+                "win_rate": 0,
+                "asset_distribution": [],
+                "daily_performance": [],
+                "trade_types": {"CALL": 0, "PUT": 0}
+            }
+        }
+    
+    # Win/loss metrics
+    winning_trades = [trade for trade in all_trades if trade.get("result") == "WIN"]
+    losing_trades = [trade for trade in all_trades if trade.get("result") == "LOSS"]
+    
+    # Asset distribution
+    asset_counts = {}
+    for trade in all_trades:
+        asset = trade.get("asset", "Unknown")
+        asset_counts[asset] = asset_counts.get(asset, 0) + 1
+    
+    asset_distribution = [
+        {"asset": asset, "count": count, "percentage": (count / total_trades) * 100}
+        for asset, count in asset_counts.items()
+    ]
+    
+    # Daily performance
+    daily_performance = {}
+    for trade in all_trades:
+        date_str = datetime.fromisoformat(str(trade.get("created_at"))).strftime("%Y-%m-%d")
+        if date_str not in daily_performance:
+            daily_performance[date_str] = {"wins": 0, "losses": 0}
+        
+        if trade.get("result") == "WIN":
+            daily_performance[date_str]["wins"] += 1
+        elif trade.get("result") == "LOSS":
+            daily_performance[date_str]["losses"] += 1
+    
+    daily_perf_list = [
+        {
+            "date": date,
+            "wins": data["wins"],
+            "losses": data["losses"],
+            "total": data["wins"] + data["losses"],
+            "win_rate": (data["wins"] / (data["wins"] + data["losses"])) * 100
+        }
+        for date, data in daily_performance.items()
+    ]
+    
+    # Trade types (CALL/PUT)
+    call_trades = sum(1 for trade in all_trades if trade.get("signal_type") == "CALL")
+    put_trades = sum(1 for trade in all_trades if trade.get("signal_type") == "PUT")
+    
+    return {
+        "metrics": {
+            "total_trades": total_trades,
+            "winning_trades": len(winning_trades),
+            "losing_trades": len(losing_trades),
+            "win_rate": (len(winning_trades) / total_trades) * 100,
+            "asset_distribution": asset_distribution,
+            "daily_performance": sorted(daily_perf_list, key=lambda x: x["date"]),
+            "trade_types": {
+                "CALL": call_trades,
+                "PUT": put_trades
+            }
+        }
+    }
+
+@api_router.get("/economic-news")
+async def get_economic_news():
+    """
+    Get economic news from various sources (simulated for now)
+    """
+    # This is demo data, in a real implementation we would fetch from ForexFactory
+    current_date = datetime.now()
+    
+    news = [
+        {
+            "title": "Fed Interest Rate Decision",
+            "date": (current_date - timedelta(days=1)).strftime("%Y-%m-%d"),
+            "time": "14:00",
+            "impact": "high",
+            "forecast": "4.75%",
+            "previous": "5.00%",
+            "actual": "4.75%",
+            "country": "USD"
+        },
+        {
+            "title": "ECB Monetary Policy Statement",
+            "date": current_date.strftime("%Y-%m-%d"),
+            "time": "12:45",
+            "impact": "high",
+            "forecast": "3.50%",
+            "previous": "3.50%",
+            "actual": "3.50%",
+            "country": "EUR"
+        },
+        {
+            "title": "US Non-Farm Payrolls",
+            "date": (current_date + timedelta(days=1)).strftime("%Y-%m-%d"),
+            "time": "13:30",
+            "impact": "high",
+            "forecast": "180K",
+            "previous": "175K",
+            "actual": "",
+            "country": "USD"
+        },
+        {
+            "title": "UK GDP",
+            "date": (current_date + timedelta(days=2)).strftime("%Y-%m-%d"),
+            "time": "09:30",
+            "impact": "medium",
+            "forecast": "0.3%",
+            "previous": "0.2%",
+            "actual": "",
+            "country": "GBP"
+        },
+        {
+            "title": "Japan CPI",
+            "date": (current_date + timedelta(days=3)).strftime("%Y-%m-%d"),
+            "time": "00:30",
+            "impact": "medium",
+            "forecast": "2.8%",
+            "previous": "2.7%",
+            "actual": "",
+            "country": "JPY"
+        }
+    ]
+    
+    # Add DXY info
+    dxy_value = 103.2 + (np.random.random() * 2 - 1)  # Random value around 103
+    dxy_change = np.random.random() * 0.6 - 0.3  # Random change between -0.3% and +0.3%
+    
+    return {
+        "news": news,
+        "dxy": {
+            "value": dxy_value,
+            "change_percent": dxy_change,
+            "reference": "Daily change",
+            "trend": "bullish" if dxy_change > 0 else "bearish"
+        }
+    }
+
+@api_router.get("/available-assets")
+async def get_available_assets():
+    """
+    Get list of available trading assets by category
+    """
+    assets = {
+        "forex": {
+            "major": [
+                {"symbol": "EURUSD", "name": "EUR/USD", "pip_value": 0.0001},
+                {"symbol": "GBPUSD", "name": "GBP/USD", "pip_value": 0.0001},
+                {"symbol": "USDJPY", "name": "USD/JPY", "pip_value": 0.01},
+                {"symbol": "AUDUSD", "name": "AUD/USD", "pip_value": 0.0001},
+                {"symbol": "USDCAD", "name": "USD/CAD", "pip_value": 0.0001},
+                {"symbol": "NZDUSD", "name": "NZD/USD", "pip_value": 0.0001}
+            ],
+            "minor": [
+                {"symbol": "EURGBP", "name": "EUR/GBP", "pip_value": 0.0001},
+                {"symbol": "EURJPY", "name": "EUR/JPY", "pip_value": 0.01},
+                {"symbol": "GBPJPY", "name": "GBP/JPY", "pip_value": 0.01}
+            ],
+            "exotic": [
+                {"symbol": "USDMXN", "name": "USD/MXN", "pip_value": 0.0001},
+                {"symbol": "USDZAR", "name": "USD/ZAR", "pip_value": 0.0001}
+            ]
+        },
+        "otc": [
+            {"symbol": "EURUSD-OTC", "name": "EUR/USD OTC", "pip_value": 0.0001},
+            {"symbol": "GBPUSD-OTC", "name": "GBP/USD OTC", "pip_value": 0.0001},
+            {"symbol": "EURGBP-OTC", "name": "EUR/GBP OTC", "pip_value": 0.0001},
+            {"symbol": "USDJPY-OTC", "name": "USD/JPY OTC", "pip_value": 0.01},
+            {"symbol": "AUDCAD-OTC", "name": "AUD/CAD OTC", "pip_value": 0.0001},
+            {"symbol": "NZDUSD-OTC", "name": "NZD/USD OTC", "pip_value": 0.0001}
+        ],
+        "crypto": [
+            {"symbol": "BTCUSD", "name": "BTC/USD", "pip_value": 1},
+            {"symbol": "ETHUSD", "name": "ETH/USD", "pip_value": 0.1},
+            {"symbol": "XRPUSD", "name": "XRP/USD", "pip_value": 0.0001}
+        ],
+        "stocks": [
+            {"symbol": "AAPL", "name": "Apple Inc.", "pip_value": 0.01},
+            {"symbol": "GOOGL", "name": "Alphabet Inc.", "pip_value": 0.01},
+            {"symbol": "MSFT", "name": "Microsoft Corp.", "pip_value": 0.01},
+            {"symbol": "AMZN", "name": "Amazon.com Inc.", "pip_value": 0.01},
+            {"symbol": "TSLA", "name": "Tesla Inc.", "pip_value": 0.01}
+        ],
+        "commodities": [
+            {"symbol": "XAUUSD", "name": "Gold", "pip_value": 0.01},
+            {"symbol": "XAGUSD", "name": "Silver", "pip_value": 0.001},
+            {"symbol": "USOIL", "name": "US Oil", "pip_value": 0.01}
+        ],
+        "indices": [
+            {"symbol": "US30", "name": "Dow Jones", "pip_value": 1},
+            {"symbol": "US500", "name": "S&P 500", "pip_value": 0.1},
+            {"symbol": "USTEC", "name": "Nasdaq", "pip_value": 0.1}
+        ]
+    }
+    
+    return {"assets": assets}
 
 # Include the router in the main app
 app.include_router(api_router)
