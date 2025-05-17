@@ -1293,7 +1293,7 @@ const Strategies = () => {
                     />
                   </div>
                   <p className="mt-2 text-sm text-gray-500">
-                    CALL is activated when RSI crosses above this value (default: 60)
+                    CALL is activated when RSI is above this value AND decreasing (default: 60)
                   </p>
                 </div>
                 
