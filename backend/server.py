@@ -809,6 +809,25 @@ async def get_available_assets():
     
     return {"assets": assets}
 
+@api_router.get("/trading/history", response_model=List[TradeSignal])
+async def trading_history(
+    current_user: User = Depends(get_current_active_user),
+    limit: int = 50
+):
+    # Get accounts belonging to user
+    accounts = await db.pocket_option_accounts.find(
+        {"user_id": current_user.id}
+    ).to_list(100)
+    
+    account_ids = [account["id"] for account in accounts]
+    
+    # Get trade history for user's accounts
+    trades = await db.trade_signals.find(
+        {"account_id": {"$in": account_ids}}
+    ).sort("created_at", -1).limit(limit).to_list(limit)
+    
+    return trades
+
 # Include the router in the main app
 app.include_router(api_router)
 
