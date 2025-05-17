@@ -510,33 +510,50 @@ const Dashboard = () => {
   
   useEffect(() => {
     // Initialize TradingView widget when component mounts
-    const script = document.createElement('script');
-    script.src = 'https://s3.tradingview.com/tv.js';
-    script.async = true;
-    script.onload = () => {
-      new window.TradingView.widget({
-        width: '100%',
-        height: 500,
-        symbol: `FX:${chartSymbol}`,
-        interval: '1',
-        timezone: 'exchange',
-        theme: 'light',
-        style: '1',
-        locale: 'en',
-        toolbar_bg: '#f1f3f6',
-        enable_publishing: false,
-        hide_top_toolbar: false,
-        allow_symbol_change: true,
-        container_id: 'tradingview_chart'
-      });
-    };
-    
-    document.head.appendChild(script);
-    
-    return () => {
-      document.head.removeChild(script);
-    };
+    if (typeof window.TradingView === 'undefined') {
+      const script = document.createElement('script');
+      script.src = 'https://s3.tradingview.com/tv.js';
+      script.async = true;
+      script.onload = createTradingViewWidget;
+      script.onerror = () => {
+        console.error('Failed to load TradingView widget script');
+      };
+      
+      document.head.appendChild(script);
+      
+      return () => {
+        if (script.parentNode) {
+          document.head.removeChild(script);
+        }
+      };
+    } else {
+      createTradingViewWidget();
+    }
   }, [chartSymbol]);
+  
+  const createTradingViewWidget = () => {
+    try {
+      if (typeof window.TradingView !== 'undefined' && document.getElementById('tradingview_chart')) {
+        new window.TradingView.widget({
+          width: '100%',
+          height: 500,
+          symbol: `FX:${chartSymbol}`,
+          interval: '1',
+          timezone: 'exchange',
+          theme: 'light',
+          style: '1',
+          locale: 'en',
+          toolbar_bg: '#f1f3f6',
+          enable_publishing: false,
+          hide_top_toolbar: false,
+          allow_symbol_change: true,
+          container_id: 'tradingview_chart'
+        });
+      }
+    } catch (error) {
+      console.error('Error creating TradingView widget:', error);
+    }
+  };
   
   const handleStartBot = async () => {
     if (!selectedAccount || !selectedStrategy) {
