@@ -509,6 +509,19 @@ const Dashboard = () => {
         });
         setTradingHistory(historyResponse.data);
         
+        // Fetch economic news and DXY info
+        const newsResponse = await axios.get(`${API}/economic-news`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setEconomicNews(newsResponse.data.news);
+        setDxyInfo(newsResponse.data.dxy);
+        
+        // Fetch available assets
+        const assetsResponse = await axios.get(`${API}/available-assets`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setAvailableAssets(assetsResponse.data.assets);
+        
         // Set default selections if available
         if (accountsResponse.data.length > 0) {
           setSelectedAccount(accountsResponse.data[0]);
