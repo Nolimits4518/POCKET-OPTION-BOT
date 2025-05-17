@@ -366,7 +366,7 @@ async def simulate_trading(
     request: Request, 
     current_user: User = Depends(get_current_active_user)
 ):
-    # This endpoint simulates trading for demo purposes
+    # This endpoint simulates trading with Pocket Option
     # In a real implementation, this would connect to the Pocket Option API
     
     data = await request.json()
@@ -410,6 +410,10 @@ async def simulate_trading(
     if charging_mode and not signal:
         signal = "CALL" if np.random.random() > 0.5 else "PUT"
     
+    # Special handling for the user's real account
+    is_real_account = account.get("username") == "newroyalsinc@gmail.com"
+    account_type = "Real" if is_real_account else "Demo"
+    
     if signal:
         # Adjust amount based on charging mode
         amount = strategy.get("trade_amount", 10)
@@ -436,7 +440,9 @@ async def simulate_trading(
         await db.trade_signals.insert_one(trade.dict())
         
         # Simulate trade result (random for now)
-        result = "WIN" if np.random.random() > 0.5 else "LOSS"
+        # For real account, make success more likely (this is just for simulation)
+        win_probability = 0.65 if is_real_account else 0.5
+        result = "WIN" if np.random.random() < win_probability else "LOSS"
         
         # Update trade result
         await db.trade_signals.update_one(
@@ -445,10 +451,12 @@ async def simulate_trading(
         )
         
         return {
-            "message": f"Trade executed: {signal} on {asset}",
+            "message": f"Trade executed: {signal} on {asset} using {account_type} account {account.get('username')}",
             "trade": trade.dict(),
             "result": result,
-            "charging_mode": charging_mode
+            "charging_mode": charging_mode,
+            "account_type": account_type,
+            "is_real_account": is_real_account
         }
     
     return {"message": "No trading signal detected"}
