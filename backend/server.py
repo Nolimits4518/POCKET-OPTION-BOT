@@ -338,6 +338,7 @@ async def simulate_trading(
     account_id = data.get("account_id")
     strategy_id = data.get("strategy_id")
     asset = data.get("asset", "EUR/USD")
+    charging_mode = data.get("charging_mode", False)
     
     # Get account
     account = await db.pocket_option_accounts.find_one({
@@ -370,14 +371,29 @@ async def simulate_trading(
         rsi_lower=strategy.get("rsi_lower_threshold", 40)
     )
     
+    # For charging mode, we always generate a signal
+    if charging_mode and not signal:
+        signal = "CALL" if np.random.random() > 0.5 else "PUT"
+    
     if signal:
+        # Adjust amount based on charging mode
+        amount = strategy.get("trade_amount", 10)
+        if charging_mode:
+            # Start with smaller amounts and increase on wins
+            recent_wins = await db.trade_signals.count_documents({
+                "account_id": account_id,
+                "result": "WIN",
+                "created_at": {"$gte": datetime.utcnow() - timedelta(hours=1)}
+            })
+            amount = amount * (1 + (recent_wins * 0.1))  # Increase 10% per recent win
+        
         # Create trade signal
         trade = TradeSignal(
             account_id=account_id,
             strategy_id=strategy_id,
             signal_type=signal,
             asset=asset,
-            amount=strategy.get("trade_amount", 10),
+            amount=amount,
             expiry_time=strategy.get("expiry_time", 60)
         )
         
@@ -387,13 +403,110 @@ async def simulate_trading(
         # Simulate trade result (random for now)
         result = "WIN" if np.random.random() > 0.5 else "LOSS"
         
+        # Update trade result
+        await db.trade_signals.update_one(
+            {"id": trade.id},
+            {"$set": {"result": result, "executed": True}}
+        )
+        
         return {
             "message": f"Trade executed: {signal} on {asset}",
             "trade": trade.dict(),
-            "result": result
+            "result": result,
+            "charging_mode": charging_mode
         }
     
     return {"message": "No trading signal detected"}
+
+@api_router.post("/webhook/tradingview/{user_id}")
+async def tradingview_webhook(user_id: str, request: Request):
+    """
+    Endpoint for receiving webhook signals from TradingView
+    
+    The webhook should be configured in TradingView alerts with a JSON payload like:
+    {
+        "strategy": "RSI Strategy",
+        "signal": "CALL" | "PUT",
+        "asset": "EURUSD",
+        "expiry": 60
+    }
+    """
+    try:
+        data = await request.json()
+        
+        # Validate required fields
+        required_fields = ["signal", "asset", "expiry"]
+        for field in required_fields:
+            if field not in data:
+                return JSONResponse(
+                    status_code=400,
+                    content={"error": f"Missing required field: {field}"}
+                )
+        
+        # Get user
+        user = await db.users.find_one({"id": user_id})
+        if not user:
+            return JSONResponse(
+                status_code=404,
+                content={"error": "User not found"}
+            )
+        
+        # Get user's accounts (use first available account for now)
+        account = await db.pocket_option_accounts.find_one({"user_id": user_id})
+        if not account:
+            return JSONResponse(
+                status_code=404,
+                content={"error": "No trading account found for this user"}
+            )
+        
+        # Get strategy (use first available or specified strategy)
+        strategy_name = data.get("strategy", "RSI Strategy")
+        strategy = await db.strategies.find_one({
+            "user_id": user_id,
+            "name": strategy_name
+        })
+        
+        if not strategy:
+            # Use default strategy if none is found
+            strategy = TradingStrategy(name=strategy_name).dict()
+            strategy["user_id"] = user_id
+            await db.strategies.insert_one(strategy)
+        
+        # Create trade signal
+        trade = TradeSignal(
+            account_id=account["id"],
+            strategy_id=strategy["id"],
+            signal_type=data["signal"],
+            asset=data["asset"],
+            amount=strategy.get("trade_amount", 10),
+            expiry_time=data.get("expiry", 60)
+        )
+        
+        # Save trade to database
+        await db.trade_signals.insert_one(trade.dict())
+        
+        # Simulate trade result
+        result = "WIN" if np.random.random() > 0.5 else "LOSS"
+        
+        # Update trade result
+        await db.trade_signals.update_one(
+            {"id": trade.id},
+            {"$set": {"result": result, "executed": True}}
+        )
+        
+        return {
+            "status": "success",
+            "message": f"Signal received: {data['signal']} on {data['asset']}",
+            "trade_id": trade.id,
+            "result": result
+        }
+    
+    except Exception as e:
+        logger.error(f"Error processing TradingView webhook: {str(e)}")
+        return JSONResponse(
+            status_code=500,
+            content={"error": str(e)}
+        )
 
 @api_router.get("/trading/history", response_model=List[TradeSignal])
 async def trading_history(
