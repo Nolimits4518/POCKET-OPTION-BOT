@@ -481,6 +481,10 @@ const Dashboard = () => {
   const [tradingHistory, setTradingHistory] = useState([]);
   const [botRunning, setBotRunning] = useState(false);
   const [signalSource, setSignalSource] = useState('built-in');
+  const [economicNews, setEconomicNews] = useState([]);
+  const [dxyInfo, setDxyInfo] = useState(null);
+  const [availableAssets, setAvailableAssets] = useState(null);
+  const [assetType, setAssetType] = useState('forex');
 
   useEffect(() => {
     const fetchData = async () => {
