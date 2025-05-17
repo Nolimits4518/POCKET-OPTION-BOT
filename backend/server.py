@@ -41,6 +41,10 @@ app = FastAPI()
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
+@api_router.get("/")
+async def root():
+    return {"message": "Welcome to Pocket Option Trading Bot API"}
+
 # OAuth2 scheme for token authentication
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login")
 
