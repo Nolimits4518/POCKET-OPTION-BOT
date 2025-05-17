@@ -465,6 +465,7 @@ const Dashboard = () => {
   const [chartSymbol, setChartSymbol] = useState('EURUSD');
   const [tradingHistory, setTradingHistory] = useState([]);
   const [botRunning, setBotRunning] = useState(false);
+  const [signalSource, setSignalSource] = useState('built-in');
 
   useEffect(() => {
     const fetchData = async () => {
