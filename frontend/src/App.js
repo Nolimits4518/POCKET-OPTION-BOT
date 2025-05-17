@@ -957,6 +957,39 @@ const Accounts = () => {
     password: '',
     is_demo: true
   });
+  const [isTestingAccount, setIsTestingAccount] = useState(false);
+  const [testResult, setTestResult] = useState(null);
+  
+  const handleTestConnection = async (accountId) => {
+    try {
+      setIsTestingAccount(true);
+      setError('');
+      setTestResult(null);
+      
+      const response = await axios.post(
+        `${API}/users/me/accounts/${accountId}/test`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+      
+      setTestResult({
+        success: true,
+        message: response.data.message || 'Connection successful!'
+      });
+      alert('Connection successful! Your Pocket Option account is valid.');
+    } catch (err) {
+      console.error('Account test error:', err);
+      setTestResult({
+        success: false,
+        message: err.response?.data?.detail || 'Connection failed. Please check your credentials.'
+      });
+      alert('Connection failed. Please check your credentials.');
+    } finally {
+      setIsTestingAccount(false);
+    }
+  };
 
   useEffect(() => {
     const fetchAccounts = async () => {
