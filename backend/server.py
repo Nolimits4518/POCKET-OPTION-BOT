@@ -18,6 +18,7 @@ from pydantic import BaseModel, Field, EmailStr, validator
 from typing import List, Optional, Dict, Any, Union
 from passlib.context import CryptContext
 import bcrypt
+from pocket_option_bot import PocketOptionBot
 
 # Load environment variables
 ROOT_DIR = Path(__file__).parent
