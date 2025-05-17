@@ -1035,51 +1035,126 @@ const Dashboard = () => {
                     {availableAssets && assetType === 'forex' && (
                       <>
                         <optgroup label="Major Pairs">
-                          {availableAssets.forex.major.map(asset => (
-                            <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
-                          ))}
+                          {availableAssets.forex.major
+                            .filter(asset => 
+                              assetSearch === '' || 
+                              asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                              asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                            )
+                            .map(asset => (
+                              <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                            ))
+                          }
                         </optgroup>
                         <optgroup label="Minor Pairs">
-                          {availableAssets.forex.minor.map(asset => (
-                            <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
-                          ))}
+                          {availableAssets.forex.minor
+                            .filter(asset => 
+                              assetSearch === '' || 
+                              asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                              asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                            )
+                            .map(asset => (
+                              <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                            ))
+                          }
                         </optgroup>
                         <optgroup label="Exotic Pairs">
-                          {availableAssets.forex.exotic.map(asset => (
-                            <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
-                          ))}
+                          {availableAssets.forex.exotic
+                            .filter(asset => 
+                              assetSearch === '' || 
+                              asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                              asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                            )
+                            .map(asset => (
+                              <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                            ))
+                          }
                         </optgroup>
                       </>
                     )}
                     
                     {availableAssets && assetType === 'otc' && (
-                      availableAssets.otc.map(asset => (
-                        <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
-                      ))
+                      availableAssets.otc
+                        .filter(asset => 
+                          assetSearch === '' || 
+                          asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                          asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                        )
+                        .map(asset => (
+                          <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                        ))
                     )}
                     
                     {availableAssets && assetType === 'crypto' && (
-                      availableAssets.crypto.map(asset => (
-                        <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
-                      ))
+                      availableAssets.crypto
+                        .filter(asset => 
+                          assetSearch === '' || 
+                          asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                          asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                        )
+                        .map(asset => (
+                          <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                        ))
                     )}
                     
                     {availableAssets && assetType === 'stocks' && (
-                      availableAssets.stocks.map(asset => (
-                        <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
-                      ))
+                      availableAssets.stocks
+                        .filter(asset => 
+                          assetSearch === '' || 
+                          asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                          asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                        )
+                        .map(asset => (
+                          <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                        ))
                     )}
                     
                     {availableAssets && assetType === 'commodities' && (
-                      availableAssets.commodities.map(asset => (
-                        <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
-                      ))
+                      availableAssets.commodities
+                        .filter(asset => 
+                          assetSearch === '' || 
+                          asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                          asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                        )
+                        .map(asset => (
+                          <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                        ))
                     )}
                     
                     {availableAssets && assetType === 'indices' && (
-                      availableAssets.indices.map(asset => (
-                        <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
-                      ))
+                      availableAssets.indices
+                        .filter(asset => 
+                          assetSearch === '' || 
+                          asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                          asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                        )
+                        .map(asset => (
+                          <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                        ))
+                    )}
+                    
+                    {availableAssets && assetType === 'etfs' && (
+                      availableAssets.etfs
+                        .filter(asset => 
+                          assetSearch === '' || 
+                          asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                          asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                        )
+                        .map(asset => (
+                          <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                        ))
+                    )}
+                    
+                    {availableAssets && assetType === 'volatility' && (
+                      availableAssets.volatility
+                        .filter(asset => 
+                          assetSearch === '' || 
+                          asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                          asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                        )
+                        .map(asset => (
+                          <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                        ))
                     )}
                     
                     {!availableAssets && (
