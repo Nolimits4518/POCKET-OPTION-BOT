@@ -799,7 +799,82 @@ const Dashboard = () => {
                   </div>
                 </div>
                 
-                {/* Symbol Selection - Enhanced with OTC support */}
+                {/* Asset Type Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Asset Type
+                  </label>
+                  <div className="mt-2 grid grid-cols-3 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setAssetType('forex')}
+                      className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+                        assetType === 'forex' 
+                          ? 'bg-indigo-600 text-white' 
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      Forex
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAssetType('otc')}
+                      className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+                        assetType === 'otc' 
+                          ? 'bg-indigo-600 text-white' 
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      OTC
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAssetType('crypto')}
+                      className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+                        assetType === 'crypto' 
+                          ? 'bg-indigo-600 text-white' 
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      Crypto
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAssetType('stocks')}
+                      className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+                        assetType === 'stocks' 
+                          ? 'bg-indigo-600 text-white' 
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      Stocks
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAssetType('commodities')}
+                      className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+                        assetType === 'commodities' 
+                          ? 'bg-indigo-600 text-white' 
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      Commodities
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAssetType('indices')}
+                      className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+                        assetType === 'indices' 
+                          ? 'bg-indigo-600 text-white' 
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      Indices
+                    </button>
+                  </div>
+                </div>
+                
+                {/* Trading Symbol Selection */}
                 <div>
                   <label htmlFor="symbol" className="block text-sm font-medium text-gray-700">
                     Trading Symbol
@@ -810,22 +885,66 @@ const Dashboard = () => {
                     value={chartSymbol}
                     onChange={(e) => setChartSymbol(e.target.value)}
                   >
-                    <optgroup label="Regular Markets">
-                      <option value="EURUSD">EUR/USD</option>
-                      <option value="GBPUSD">GBP/USD</option>
-                      <option value="USDJPY">USD/JPY</option>
-                      <option value="AUDUSD">AUD/USD</option>
-                      <option value="USDCAD">USD/CAD</option>
-                      <option value="NZDUSD">NZD/USD</option>
-                    </optgroup>
-                    <optgroup label="OTC Markets (Weekend Trading)">
-                      <option value="EURUSD-OTC">EUR/USD OTC</option>
-                      <option value="GBPUSD-OTC">GBP/USD OTC</option>
-                      <option value="EURGBP-OTC">EUR/GBP OTC</option>
-                      <option value="USDJPY-OTC">USD/JPY OTC</option>
-                      <option value="AUDCAD-OTC">AUD/CAD OTC</option>
-                      <option value="NZDUSD-OTC">NZD/USD OTC</option>
-                    </optgroup>
+                    {availableAssets && assetType === 'forex' && (
+                      <>
+                        <optgroup label="Major Pairs">
+                          {availableAssets.forex.major.map(asset => (
+                            <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                          ))}
+                        </optgroup>
+                        <optgroup label="Minor Pairs">
+                          {availableAssets.forex.minor.map(asset => (
+                            <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                          ))}
+                        </optgroup>
+                        <optgroup label="Exotic Pairs">
+                          {availableAssets.forex.exotic.map(asset => (
+                            <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                          ))}
+                        </optgroup>
+                      </>
+                    )}
+                    
+                    {availableAssets && assetType === 'otc' && (
+                      availableAssets.otc.map(asset => (
+                        <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                      ))
+                    )}
+                    
+                    {availableAssets && assetType === 'crypto' && (
+                      availableAssets.crypto.map(asset => (
+                        <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                      ))
+                    )}
+                    
+                    {availableAssets && assetType === 'stocks' && (
+                      availableAssets.stocks.map(asset => (
+                        <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                      ))
+                    )}
+                    
+                    {availableAssets && assetType === 'commodities' && (
+                      availableAssets.commodities.map(asset => (
+                        <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                      ))
+                    )}
+                    
+                    {availableAssets && assetType === 'indices' && (
+                      availableAssets.indices.map(asset => (
+                        <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                      ))
+                    )}
+                    
+                    {!availableAssets && (
+                      <optgroup label="Regular Markets">
+                        <option value="EURUSD">EUR/USD</option>
+                        <option value="GBPUSD">GBP/USD</option>
+                        <option value="USDJPY">USD/JPY</option>
+                        <option value="AUDUSD">AUD/USD</option>
+                        <option value="USDCAD">USD/CAD</option>
+                        <option value="NZDUSD">NZD/USD</option>
+                      </optgroup>
+                    )}
                   </select>
                 </div>
                 
