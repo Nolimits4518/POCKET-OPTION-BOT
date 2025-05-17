@@ -1570,46 +1570,50 @@ const TradingHistory = () => {
 };
 
 function App() {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route 
+          path="/" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/accounts" 
+          element={
+            <ProtectedRoute>
+              <Accounts />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/strategies" 
+          element={
+            <ProtectedRoute>
+              <Strategies />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/history" 
+          element={
+            <ProtectedRoute>
+              <TradingHistory />
+            </ProtectedRoute>
+          } 
+        />
+      </>
+    )
+  );
+
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route 
-            path="/" 
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/accounts" 
-            element={
-              <ProtectedRoute>
-                <Accounts />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/strategies" 
-            element={
-              <ProtectedRoute>
-                <Strategies />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/history" 
-            element={
-              <ProtectedRoute>
-                <TradingHistory />
-              </ProtectedRoute>
-            } 
-          />
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </AuthProvider>
   );
 }
