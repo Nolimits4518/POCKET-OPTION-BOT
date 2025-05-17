@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider, Route, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title } from 'chart.js';
+import { Pie, Bar, Line } from 'react-chartjs-2';
 import "./App.css";
 
 // Constants and configurations
