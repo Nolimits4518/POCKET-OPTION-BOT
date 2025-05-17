@@ -434,7 +434,8 @@ async def simulate_trading(
             signal_type=signal,
             asset=asset,
             amount=amount,
-            expiry_time=strategy.get("expiry_time", 60)
+            expiry_time=strategy.get("expiry_time", 60),
+            account_type=account_type
         )
         
         # Save trade to database
