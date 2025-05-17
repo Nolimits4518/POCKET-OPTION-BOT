@@ -1620,17 +1620,27 @@ const Strategies = () => {
 const TradingHistory = () => {
   const { token } = useAuth();
   const [tradingHistory, setTradingHistory] = useState([]);
+  const [metrics, setMetrics] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [chartType, setChartType] = useState('winRate');
 
   useEffect(() => {
-    const fetchHistory = async () => {
+    const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`${API}/trading/history`, {
+        
+        // Fetch trading history
+        const historyResponse = await axios.get(`${API}/trading/history`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        setTradingHistory(response.data);
+        setTradingHistory(historyResponse.data);
+        
+        // Fetch metrics for charts
+        const metricsResponse = await axios.get(`${API}/trading/metrics`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setMetrics(metricsResponse.data.metrics);
       } catch (err) {
         console.error('Error fetching trading history:', err);
         setError('Failed to load trading history. Please try again later.');
@@ -1639,7 +1649,7 @@ const TradingHistory = () => {
       }
     };
     
-    fetchHistory();
+    fetchData();
   }, [token]);
 
   if (isLoading) {
