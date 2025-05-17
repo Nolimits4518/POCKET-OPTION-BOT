@@ -172,6 +172,9 @@ const DashboardLayout = ({ children }) => {
               <h1 className="text-2xl font-semibold text-gray-900">
                 Pocket Option Trading Bot
               </h1>
+              <p className="text-sm text-gray-600 mt-1">
+                RSI Strategy: CALL when RSI is above threshold AND decreasing, PUT when RSI is below threshold AND decreasing
+              </p>
               <div className="flex items-center space-x-4">
                 <span className="text-gray-700">
                   {user?.username}
