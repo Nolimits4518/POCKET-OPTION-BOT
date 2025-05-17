@@ -1005,11 +1005,27 @@ const Dashboard = () => {
                   </div>
                 </div>
                 
-                {/* Trading Symbol Selection */}
+                {/* Trading Symbol Selection with Search */}
                 <div>
                   <label htmlFor="symbol" className="block text-sm font-medium text-gray-700">
                     Trading Symbol
                   </label>
+                  
+                  <div className="mt-1 relative rounded-md shadow-sm">
+                    <input
+                      type="text"
+                      className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pr-10 sm:text-sm border-gray-300 rounded-md mb-2"
+                      placeholder="Search assets..."
+                      value={assetSearch}
+                      onChange={(e) => setAssetSearch(e.target.value)}
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                      <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                  
                   <select
                     id="symbol"
                     className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
