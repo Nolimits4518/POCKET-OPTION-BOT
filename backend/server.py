@@ -791,18 +791,47 @@ async def get_available_assets():
                 {"symbol": "USDPLN", "name": "USD/PLN", "pip_value": 0.0001}
             ]
         },
-        "otc": [
-            {"symbol": "EURUSD-OTC", "name": "EUR/USD OTC", "pip_value": 0.0001},
-            {"symbol": "GBPUSD-OTC", "name": "GBP/USD OTC", "pip_value": 0.0001},
-            {"symbol": "EURGBP-OTC", "name": "EUR/GBP OTC", "pip_value": 0.0001},
-            {"symbol": "USDJPY-OTC", "name": "USD/JPY OTC", "pip_value": 0.01},
-            {"symbol": "AUDCAD-OTC", "name": "AUD/CAD OTC", "pip_value": 0.0001},
-            {"symbol": "NZDUSD-OTC", "name": "NZD/USD OTC", "pip_value": 0.0001},
-            {"symbol": "EURJPY-OTC", "name": "EUR/JPY OTC", "pip_value": 0.01},
-            {"symbol": "GBPJPY-OTC", "name": "GBP/JPY OTC", "pip_value": 0.01},
-            {"symbol": "USDCHF-OTC", "name": "USD/CHF OTC", "pip_value": 0.0001},
-            {"symbol": "AUDNZD-OTC", "name": "AUD/NZD OTC", "pip_value": 0.0001}
-        ],
+        "otc": {
+            "forex": [
+                {"symbol": "EURUSD-OTC", "name": "EUR/USD OTC", "pip_value": 0.0001},
+                {"symbol": "GBPUSD-OTC", "name": "GBP/USD OTC", "pip_value": 0.0001},
+                {"symbol": "EURGBP-OTC", "name": "EUR/GBP OTC", "pip_value": 0.0001},
+                {"symbol": "USDJPY-OTC", "name": "USD/JPY OTC", "pip_value": 0.01},
+                {"symbol": "AUDCAD-OTC", "name": "AUD/CAD OTC", "pip_value": 0.0001},
+                {"symbol": "NZDUSD-OTC", "name": "NZD/USD OTC", "pip_value": 0.0001},
+                {"symbol": "EURJPY-OTC", "name": "EUR/JPY OTC", "pip_value": 0.01},
+                {"symbol": "GBPJPY-OTC", "name": "GBP/JPY OTC", "pip_value": 0.01},
+                {"symbol": "USDCHF-OTC", "name": "USD/CHF OTC", "pip_value": 0.0001},
+                {"symbol": "AUDNZD-OTC", "name": "AUD/NZD OTC", "pip_value": 0.0001}
+            ],
+            "crypto": [
+                {"symbol": "BTCUSD-OTC", "name": "Bitcoin (BTC/USD) OTC", "pip_value": 1},
+                {"symbol": "ETHUSD-OTC", "name": "Ethereum (ETH/USD) OTC", "pip_value": 0.1},
+                {"symbol": "LTCUSD-OTC", "name": "Litecoin (LTC/USD) OTC", "pip_value": 0.01},
+                {"symbol": "XRPUSD-OTC", "name": "Ripple (XRP/USD) OTC", "pip_value": 0.0001},
+                {"symbol": "DOGEUSD-OTC", "name": "Dogecoin (DOGE/USD) OTC", "pip_value": 0.0001},
+                {"symbol": "ADAUSD-OTC", "name": "Cardano (ADA/USD) OTC", "pip_value": 0.0001}
+            ],
+            "stocks": [
+                {"symbol": "AAPL-OTC", "name": "Apple Inc. OTC", "pip_value": 0.01},
+                {"symbol": "MSFT-OTC", "name": "Microsoft Corp. OTC", "pip_value": 0.01},
+                {"symbol": "FB-OTC", "name": "Facebook Inc. OTC", "pip_value": 0.01},
+                {"symbol": "TSLA-OTC", "name": "Tesla Inc. OTC", "pip_value": 0.01},
+                {"symbol": "AMZN-OTC", "name": "Amazon.com Inc. OTC", "pip_value": 0.01},
+                {"symbol": "GOOGL-OTC", "name": "Alphabet Inc. OTC", "pip_value": 0.01}
+            ],
+            "commodities": [
+                {"symbol": "XAUUSD-OTC", "name": "Gold OTC", "pip_value": 0.01},
+                {"symbol": "XAGUSD-OTC", "name": "Silver OTC", "pip_value": 0.001},
+                {"symbol": "BRENT-OTC", "name": "Brent Oil OTC", "pip_value": 0.01},
+                {"symbol": "WTI-OTC", "name": "WTI Crude Oil OTC", "pip_value": 0.01}
+            ],
+            "indices": [
+                {"symbol": "SP500-OTC", "name": "S&P 500 OTC", "pip_value": 0.1},
+                {"symbol": "DJI30-OTC", "name": "Dow Jones OTC", "pip_value": 0.1},
+                {"symbol": "US100-OTC", "name": "US100 (NASDAQ) OTC", "pip_value": 0.1}
+            ]
+        },
         "crypto": [
             {"symbol": "BTCUSD", "name": "Bitcoin (BTC/USD)", "pip_value": 1},
             {"symbol": "ETHUSD", "name": "Ethereum (ETH/USD)", "pip_value": 0.1},
