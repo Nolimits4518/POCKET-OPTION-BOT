@@ -2167,6 +2167,13 @@ const TradingHistory = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        trade.account_type === 'Real' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+                      }`}>
+                        {trade.account_type || 'Demo'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         trade.result === 'WIN' ? 'bg-green-100 text-green-800' :
                         trade.result === 'LOSS' ? 'bg-red-100 text-red-800' :
                         'bg-gray-100 text-gray-800'
