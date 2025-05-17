@@ -172,14 +172,25 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
 # RSI Strategy Implementation
 def calculate_rsi(prices, period=14):
     rsi_indicator = RSIIndicator(close=pd.Series(prices), window=period)
-    return rsi_indicator.rsi().iloc[-1]
+    return rsi_indicator.rsi()
 
 def get_trading_signal(prices, rsi_upper=60, rsi_lower=40):
-    rsi = calculate_rsi(prices)
-    if rsi > rsi_upper:
+    # Calculate RSI for the entire price series
+    rsi_series = calculate_rsi(prices)
+    
+    # Get the current and previous RSI values
+    current_rsi = rsi_series.iloc[-1]
+    previous_rsi = rsi_series.iloc[-2] if len(rsi_series) > 1 else current_rsi
+    
+    # Check if RSI is decreasing (current < previous)
+    is_decreasing = current_rsi < previous_rsi
+    
+    # Trading signals based on refined strategy
+    if current_rsi > rsi_upper and is_decreasing:
         return "CALL"
-    elif rsi < rsi_lower:
+    elif current_rsi < rsi_lower and is_decreasing:
         return "PUT"
+    
     return None
 
 # ------ API Routes ------
