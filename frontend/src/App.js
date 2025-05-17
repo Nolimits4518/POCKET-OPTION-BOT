@@ -600,6 +600,42 @@ const Dashboard = () => {
   const handleStopBot = () => {
     setBotRunning(false);
   };
+  
+  const handleChargingMode = async () => {
+    if (!selectedAccount || !selectedStrategy) {
+      setError('Please select an account and strategy first.');
+      return;
+    }
+    
+    setBotRunning(true);
+    
+    try {
+      // Start with a small amount and increase on wins
+      const response = await axios.post(
+        `${API}/simulate/trading`,
+        {
+          account_id: selectedAccount.id,
+          strategy_id: selectedStrategy.id,
+          asset: chartSymbol,
+          charging_mode: true
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+      
+      console.log('Charging mode activated:', response.data);
+      
+      // Update trading history
+      const historyResponse = await axios.get(`${API}/trading/history`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setTradingHistory(historyResponse.data);
+    } catch (err) {
+      console.error('Charging mode error:', err);
+      setError('Failed to activate charging mode. Please try again.');
+    }
+  };
 
   if (isLoading) {
     return (
