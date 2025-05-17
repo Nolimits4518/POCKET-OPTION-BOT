@@ -4,6 +4,8 @@ import axios from "axios";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title } from 'chart.js';
 import { Pie, Bar, Line } from 'react-chartjs-2';
 import "./App.css";
+import { ThemeProvider } from "./ThemeContext";
+import ThemeSwitcher from "./components/ThemeSwitcher";
 
 // Register Chart.js components
 ChartJS.register(
