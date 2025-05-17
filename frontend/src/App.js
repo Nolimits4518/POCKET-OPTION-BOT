@@ -168,7 +168,8 @@ const DashboardLayout = ({ children }) => {
             </li>
           </ul>
         </nav>
-        <div className="absolute bottom-0 w-full p-4">
+        <div className="absolute bottom-0 w-full p-4 space-y-4">
+          <ThemeSwitcher />
           <button 
             onClick={logout}
             className="flex items-center space-x-3 text-gray-300 p-2 rounded-md font-medium hover:bg-indigo-700 hover:text-white w-full"
