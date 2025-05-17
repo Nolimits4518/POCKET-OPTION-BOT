@@ -912,11 +912,11 @@ const Dashboard = () => {
                   <label className="block text-sm font-medium text-gray-700">
                     Asset Type
                   </label>
-                  <div className="mt-2 grid grid-cols-3 gap-2">
+                  <div className="mt-2 grid grid-cols-4 gap-2">
                     <button
                       type="button"
                       onClick={() => setAssetType('forex')}
-                      className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+                      className={`px-3 py-1.5 text-xs font-medium rounded-md ${
                         assetType === 'forex' 
                           ? 'bg-indigo-600 text-white' 
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -927,7 +927,7 @@ const Dashboard = () => {
                     <button
                       type="button"
                       onClick={() => setAssetType('otc')}
-                      className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+                      className={`px-3 py-1.5 text-xs font-medium rounded-md ${
                         assetType === 'otc' 
                           ? 'bg-indigo-600 text-white' 
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -938,7 +938,7 @@ const Dashboard = () => {
                     <button
                       type="button"
                       onClick={() => setAssetType('crypto')}
-                      className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+                      className={`px-3 py-1.5 text-xs font-medium rounded-md ${
                         assetType === 'crypto' 
                           ? 'bg-indigo-600 text-white' 
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -949,7 +949,7 @@ const Dashboard = () => {
                     <button
                       type="button"
                       onClick={() => setAssetType('stocks')}
-                      className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+                      className={`px-3 py-1.5 text-xs font-medium rounded-md ${
                         assetType === 'stocks' 
                           ? 'bg-indigo-600 text-white' 
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -960,7 +960,7 @@ const Dashboard = () => {
                     <button
                       type="button"
                       onClick={() => setAssetType('commodities')}
-                      className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+                      className={`px-3 py-1.5 text-xs font-medium rounded-md ${
                         assetType === 'commodities' 
                           ? 'bg-indigo-600 text-white' 
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -971,13 +971,35 @@ const Dashboard = () => {
                     <button
                       type="button"
                       onClick={() => setAssetType('indices')}
-                      className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+                      className={`px-3 py-1.5 text-xs font-medium rounded-md ${
                         assetType === 'indices' 
                           ? 'bg-indigo-600 text-white' 
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
                       Indices
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAssetType('etfs')}
+                      className={`px-3 py-1.5 text-xs font-medium rounded-md ${
+                        assetType === 'etfs' 
+                          ? 'bg-indigo-600 text-white' 
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      ETFs
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAssetType('volatility')}
+                      className={`px-3 py-1.5 text-xs font-medium rounded-md ${
+                        assetType === 'volatility' 
+                          ? 'bg-indigo-600 text-white' 
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      Volatility
                     </button>
                   </div>
                 </div>
