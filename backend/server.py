@@ -59,7 +59,7 @@ class TokenData(BaseModel):
 
 class PocketOptionAccount(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    user_id: str
+    user_id: Optional[str] = None
     account_name: str
     username: str
     password: str
