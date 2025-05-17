@@ -485,6 +485,7 @@ const Dashboard = () => {
   const [dxyInfo, setDxyInfo] = useState(null);
   const [availableAssets, setAvailableAssets] = useState(null);
   const [assetType, setAssetType] = useState('forex');
+  const [assetSearch, setAssetSearch] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
