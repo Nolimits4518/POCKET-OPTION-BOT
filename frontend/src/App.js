@@ -1074,15 +1074,68 @@ const Dashboard = () => {
                     )}
                     
                     {availableAssets && assetType === 'otc' && (
-                      availableAssets.otc
-                        .filter(asset => 
-                          assetSearch === '' || 
-                          asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
-                          asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
-                        )
-                        .map(asset => (
-                          <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
-                        ))
+                      <>
+                        <optgroup label="Forex OTC">
+                          {availableAssets.otc.forex
+                            .filter(asset => 
+                              assetSearch === '' || 
+                              asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                              asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                            )
+                            .map(asset => (
+                              <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                            ))
+                          }
+                        </optgroup>
+                        <optgroup label="Crypto OTC">
+                          {availableAssets.otc.crypto
+                            .filter(asset => 
+                              assetSearch === '' || 
+                              asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                              asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                            )
+                            .map(asset => (
+                              <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                            ))
+                          }
+                        </optgroup>
+                        <optgroup label="Stocks OTC">
+                          {availableAssets.otc.stocks
+                            .filter(asset => 
+                              assetSearch === '' || 
+                              asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                              asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                            )
+                            .map(asset => (
+                              <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                            ))
+                          }
+                        </optgroup>
+                        <optgroup label="Commodities OTC">
+                          {availableAssets.otc.commodities
+                            .filter(asset => 
+                              assetSearch === '' || 
+                              asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                              asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                            )
+                            .map(asset => (
+                              <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                            ))
+                          }
+                        </optgroup>
+                        <optgroup label="Indices OTC">
+                          {availableAssets.otc.indices
+                            .filter(asset => 
+                              assetSearch === '' || 
+                              asset.name.toLowerCase().includes(assetSearch.toLowerCase()) ||
+                              asset.symbol.toLowerCase().includes(assetSearch.toLowerCase())
+                            )
+                            .map(asset => (
+                              <option key={asset.symbol} value={asset.symbol}>{asset.name}</option>
+                            ))
+                          }
+                        </optgroup>
+                      </>
                     )}
                     
                     {availableAssets && assetType === 'crypto' && (
