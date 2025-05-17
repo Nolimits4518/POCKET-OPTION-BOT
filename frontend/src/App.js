@@ -767,7 +767,7 @@ const Dashboard = () => {
                   </div>
                 </div>
                 
-                {/* Symbol Selection */}
+                {/* Symbol Selection - Enhanced with OTC support */}
                 <div>
                   <label htmlFor="symbol" className="block text-sm font-medium text-gray-700">
                     Trading Symbol
@@ -778,12 +778,22 @@ const Dashboard = () => {
                     value={chartSymbol}
                     onChange={(e) => setChartSymbol(e.target.value)}
                   >
-                    <option value="EURUSD">EUR/USD</option>
-                    <option value="GBPUSD">GBP/USD</option>
-                    <option value="USDJPY">USD/JPY</option>
-                    <option value="AUDUSD">AUD/USD</option>
-                    <option value="USDCAD">USD/CAD</option>
-                    <option value="NZDUSD">NZD/USD</option>
+                    <optgroup label="Regular Markets">
+                      <option value="EURUSD">EUR/USD</option>
+                      <option value="GBPUSD">GBP/USD</option>
+                      <option value="USDJPY">USD/JPY</option>
+                      <option value="AUDUSD">AUD/USD</option>
+                      <option value="USDCAD">USD/CAD</option>
+                      <option value="NZDUSD">NZD/USD</option>
+                    </optgroup>
+                    <optgroup label="OTC Markets (Weekend Trading)">
+                      <option value="EURUSD-OTC">EUR/USD OTC</option>
+                      <option value="GBPUSD-OTC">GBP/USD OTC</option>
+                      <option value="EURGBP-OTC">EUR/GBP OTC</option>
+                      <option value="USDJPY-OTC">USD/JPY OTC</option>
+                      <option value="AUDCAD-OTC">AUD/CAD OTC</option>
+                      <option value="NZDUSD-OTC">NZD/USD OTC</option>
+                    </optgroup>
                   </select>
                 </div>
                 
