@@ -761,6 +761,7 @@ async def get_available_assets():
                 {"symbol": "EURUSD", "name": "EUR/USD", "pip_value": 0.0001},
                 {"symbol": "GBPUSD", "name": "GBP/USD", "pip_value": 0.0001},
                 {"symbol": "USDJPY", "name": "USD/JPY", "pip_value": 0.01},
+                {"symbol": "USDCHF", "name": "USD/CHF", "pip_value": 0.0001},
                 {"symbol": "AUDUSD", "name": "AUD/USD", "pip_value": 0.0001},
                 {"symbol": "USDCAD", "name": "USD/CAD", "pip_value": 0.0001},
                 {"symbol": "NZDUSD", "name": "NZD/USD", "pip_value": 0.0001}
@@ -768,11 +769,26 @@ async def get_available_assets():
             "minor": [
                 {"symbol": "EURGBP", "name": "EUR/GBP", "pip_value": 0.0001},
                 {"symbol": "EURJPY", "name": "EUR/JPY", "pip_value": 0.01},
-                {"symbol": "GBPJPY", "name": "GBP/JPY", "pip_value": 0.01}
+                {"symbol": "GBPJPY", "name": "GBP/JPY", "pip_value": 0.01},
+                {"symbol": "AUDCHF", "name": "AUD/CHF", "pip_value": 0.0001},
+                {"symbol": "CHFJPY", "name": "CHF/JPY", "pip_value": 0.01},
+                {"symbol": "EURCHF", "name": "EUR/CHF", "pip_value": 0.0001},
+                {"symbol": "AUDCAD", "name": "AUD/CAD", "pip_value": 0.0001},
+                {"symbol": "GBPCAD", "name": "GBP/CAD", "pip_value": 0.0001},
+                {"symbol": "AUDNZD", "name": "AUD/NZD", "pip_value": 0.0001},
+                {"symbol": "CADJPY", "name": "CAD/JPY", "pip_value": 0.01}
             ],
             "exotic": [
+                {"symbol": "USDBRL", "name": "USD/BRL", "pip_value": 0.0001},
+                {"symbol": "USDINR", "name": "USD/INR", "pip_value": 0.0001},
+                {"symbol": "USDSGD", "name": "USD/SGD", "pip_value": 0.0001},
+                {"symbol": "USDTHB", "name": "USD/THB", "pip_value": 0.0001},
                 {"symbol": "USDMXN", "name": "USD/MXN", "pip_value": 0.0001},
-                {"symbol": "USDZAR", "name": "USD/ZAR", "pip_value": 0.0001}
+                {"symbol": "USDIDR", "name": "USD/IDR", "pip_value": 0.0001},
+                {"symbol": "USDZAR", "name": "USD/ZAR", "pip_value": 0.0001},
+                {"symbol": "USDTRY", "name": "USD/TRY", "pip_value": 0.0001},
+                {"symbol": "EURTRY", "name": "EUR/TRY", "pip_value": 0.0001},
+                {"symbol": "USDPLN", "name": "USD/PLN", "pip_value": 0.0001}
             ]
         },
         "otc": [
@@ -781,29 +797,87 @@ async def get_available_assets():
             {"symbol": "EURGBP-OTC", "name": "EUR/GBP OTC", "pip_value": 0.0001},
             {"symbol": "USDJPY-OTC", "name": "USD/JPY OTC", "pip_value": 0.01},
             {"symbol": "AUDCAD-OTC", "name": "AUD/CAD OTC", "pip_value": 0.0001},
-            {"symbol": "NZDUSD-OTC", "name": "NZD/USD OTC", "pip_value": 0.0001}
+            {"symbol": "NZDUSD-OTC", "name": "NZD/USD OTC", "pip_value": 0.0001},
+            {"symbol": "EURJPY-OTC", "name": "EUR/JPY OTC", "pip_value": 0.01},
+            {"symbol": "GBPJPY-OTC", "name": "GBP/JPY OTC", "pip_value": 0.01},
+            {"symbol": "USDCHF-OTC", "name": "USD/CHF OTC", "pip_value": 0.0001},
+            {"symbol": "AUDNZD-OTC", "name": "AUD/NZD OTC", "pip_value": 0.0001}
         ],
         "crypto": [
-            {"symbol": "BTCUSD", "name": "BTC/USD", "pip_value": 1},
-            {"symbol": "ETHUSD", "name": "ETH/USD", "pip_value": 0.1},
-            {"symbol": "XRPUSD", "name": "XRP/USD", "pip_value": 0.0001}
+            {"symbol": "BTCUSD", "name": "Bitcoin (BTC/USD)", "pip_value": 1},
+            {"symbol": "ETHUSD", "name": "Ethereum (ETH/USD)", "pip_value": 0.1},
+            {"symbol": "LTCUSD", "name": "Litecoin (LTC/USD)", "pip_value": 0.01},
+            {"symbol": "XRPUSD", "name": "Ripple (XRP/USD)", "pip_value": 0.0001},
+            {"symbol": "DOGEUSD", "name": "Dogecoin (DOGE/USD)", "pip_value": 0.0001},
+            {"symbol": "ADAUSD", "name": "Cardano (ADA/USD)", "pip_value": 0.0001},
+            {"symbol": "SOLUSD", "name": "Solana (SOL/USD)", "pip_value": 0.01},
+            {"symbol": "DOTUSD", "name": "Polkadot (DOT/USD)", "pip_value": 0.01},
+            {"symbol": "LINKUSD", "name": "Chainlink (LINK/USD)", "pip_value": 0.01},
+            {"symbol": "AVAXUSD", "name": "Avalanche (AVAX/USD)", "pip_value": 0.01},
+            {"symbol": "TRXUSD", "name": "TRON (TRX/USD)", "pip_value": 0.0001},
+            {"symbol": "BNBUSD", "name": "Binance Coin (BNB/USD)", "pip_value": 0.1},
+            {"symbol": "MATICUSD", "name": "Polygon (MATIC/USD)", "pip_value": 0.0001},
+            {"symbol": "TONUSD", "name": "Toncoin (TON/USD)", "pip_value": 0.01}
         ],
         "stocks": [
             {"symbol": "AAPL", "name": "Apple Inc.", "pip_value": 0.01},
-            {"symbol": "GOOGL", "name": "Alphabet Inc.", "pip_value": 0.01},
             {"symbol": "MSFT", "name": "Microsoft Corp.", "pip_value": 0.01},
+            {"symbol": "FB", "name": "Facebook Inc.", "pip_value": 0.01},
+            {"symbol": "INTC", "name": "Intel Corp.", "pip_value": 0.01},
+            {"symbol": "TSLA", "name": "Tesla Inc.", "pip_value": 0.01},
+            {"symbol": "JNJ", "name": "Johnson & Johnson", "pip_value": 0.01},
+            {"symbol": "AXP", "name": "American Express", "pip_value": 0.01},
+            {"symbol": "PFE", "name": "Pfizer Inc.", "pip_value": 0.01},
+            {"symbol": "CSCO", "name": "Cisco Systems", "pip_value": 0.01},
+            {"symbol": "BABA", "name": "Alibaba Group", "pip_value": 0.01},
+            {"symbol": "BA", "name": "Boeing Company", "pip_value": 0.01},
             {"symbol": "AMZN", "name": "Amazon.com Inc.", "pip_value": 0.01},
-            {"symbol": "TSLA", "name": "Tesla Inc.", "pip_value": 0.01}
+            {"symbol": "NFLX", "name": "Netflix Inc.", "pip_value": 0.01},
+            {"symbol": "MCD", "name": "McDonald's Corp.", "pip_value": 0.01},
+            {"symbol": "XOM", "name": "ExxonMobil Corp.", "pip_value": 0.01},
+            {"symbol": "GOOGL", "name": "Alphabet Inc.", "pip_value": 0.01},
+            {"symbol": "AMD", "name": "Advanced Micro Devices", "pip_value": 0.01},
+            {"symbol": "DIS", "name": "Walt Disney Co.", "pip_value": 0.01},
+            {"symbol": "NKE", "name": "Nike Inc.", "pip_value": 0.01},
+            {"symbol": "V", "name": "Visa Inc.", "pip_value": 0.01}
         ],
         "commodities": [
             {"symbol": "XAUUSD", "name": "Gold", "pip_value": 0.01},
             {"symbol": "XAGUSD", "name": "Silver", "pip_value": 0.001},
-            {"symbol": "USOIL", "name": "US Oil", "pip_value": 0.01}
+            {"symbol": "XPTUSD", "name": "Platinum", "pip_value": 0.01},
+            {"symbol": "XPDUSD", "name": "Palladium", "pip_value": 0.01},
+            {"symbol": "BRENT", "name": "Brent Oil", "pip_value": 0.01},
+            {"symbol": "WTI", "name": "WTI Crude Oil", "pip_value": 0.01},
+            {"symbol": "NGAS", "name": "Natural Gas", "pip_value": 0.001},
+            {"symbol": "COPPER", "name": "Copper", "pip_value": 0.001}
         ],
         "indices": [
-            {"symbol": "US30", "name": "Dow Jones", "pip_value": 1},
-            {"symbol": "US500", "name": "S&P 500", "pip_value": 0.1},
-            {"symbol": "USTEC", "name": "Nasdaq", "pip_value": 0.1}
+            {"symbol": "AUS200", "name": "AUS 200", "pip_value": 0.1},
+            {"symbol": "E35EUR", "name": "E35EUR", "pip_value": 0.1},
+            {"symbol": "100GBP", "name": "100GBP", "pip_value": 0.1},
+            {"symbol": "F40EUR", "name": "F40EUR", "pip_value": 0.1},
+            {"symbol": "JPN225", "name": "JPN225", "pip_value": 0.1},
+            {"symbol": "D30EUR", "name": "D30EUR", "pip_value": 0.1},
+            {"symbol": "E50EUR", "name": "E50EUR", "pip_value": 0.1},
+            {"symbol": "SP500", "name": "S&P 500", "pip_value": 0.1},
+            {"symbol": "DJI30", "name": "Dow Jones", "pip_value": 0.1},
+            {"symbol": "US100", "name": "US100 (NASDAQ)", "pip_value": 0.1}
+        ],
+        "etfs": [
+            {"symbol": "SPY", "name": "SPDR S&P 500 ETF", "pip_value": 0.01},
+            {"symbol": "QQQ", "name": "Invesco QQQ Trust", "pip_value": 0.01},
+            {"symbol": "DIA", "name": "SPDR Dow Jones Industrial Average", "pip_value": 0.01},
+            {"symbol": "IWM", "name": "iShares Russell 2000 ETF", "pip_value": 0.01},
+            {"symbol": "GLD", "name": "SPDR Gold Shares", "pip_value": 0.01},
+            {"symbol": "SLV", "name": "iShares Silver Trust", "pip_value": 0.01},
+            {"symbol": "USO", "name": "United States Oil Fund", "pip_value": 0.01},
+            {"symbol": "XLE", "name": "Energy Select Sector SPDR", "pip_value": 0.01}
+        ],
+        "volatility": [
+            {"symbol": "VIX", "name": "CBOE Volatility Index", "pip_value": 0.01},
+            {"symbol": "VVIX", "name": "VIX Volatility Index", "pip_value": 0.01},
+            {"symbol": "VXN", "name": "CBOE NASDAQ Volatility Index", "pip_value": 0.01},
+            {"symbol": "VOLX50", "name": "EURO STOXX 50 Volatility", "pip_value": 0.01}
         ]
     }
     
