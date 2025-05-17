@@ -339,6 +339,28 @@ async def test_account_connection(
             detail="Connection failed. Please check your credentials.",
         )
 
+@api_router.delete("/users/me/accounts/{account_id}")
+async def delete_account(
+    account_id: str, 
+    current_user: User = Depends(get_current_active_user)
+):
+    # Check if account exists and belongs to user
+    account = await db.pocket_option_accounts.find_one({
+        "id": account_id, 
+        "user_id": current_user.id
+    })
+    
+    if not account:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Account not found",
+        )
+    
+    # Delete account
+    await db.pocket_option_accounts.delete_one({"id": account_id})
+    
+    return {"message": "Account deleted successfully"}
+
 @api_router.post("/simulate/trading")
 async def simulate_trading(
     request: Request, 
