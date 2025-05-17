@@ -1315,7 +1315,7 @@ const Strategies = () => {
                     />
                   </div>
                   <p className="mt-2 text-sm text-gray-500">
-                    PUT is activated when RSI crosses below this value (default: 40)
+                    PUT is activated when RSI is below this value AND decreasing (default: 40)
                   </p>
                 </div>
                 
