@@ -613,6 +613,15 @@ const Dashboard = () => {
       
       console.log('Trading response:', response.data);
       
+      // Show notification if using real account
+      if (response.data.is_real_account) {
+        if (response.data.result === "WIN") {
+          alert(`🎉 WINNING TRADE on REAL ACCOUNT! ${response.data.trade.signal_type} ${response.data.trade.asset} for $${response.data.trade.amount.toFixed(2)}`);
+        } else {
+          alert(`⚠️ TRADE RESULT on REAL ACCOUNT: ${response.data.result} - ${response.data.trade.signal_type} ${response.data.trade.asset} for $${response.data.trade.amount.toFixed(2)}`);
+        }
+      }
+      
       // Update trading history
       const historyResponse = await axios.get(`${API}/trading/history`, {
         headers: { Authorization: `Bearer ${token}` }
