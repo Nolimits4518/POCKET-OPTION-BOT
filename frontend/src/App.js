@@ -1570,46 +1570,32 @@ const TradingHistory = () => {
 };
 
 function App() {
-  const router = createBrowserRouter(
-    createRoutesFromElements(
-      <>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route 
-          path="/" 
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/accounts" 
-          element={
-            <ProtectedRoute>
-              <Accounts />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/strategies" 
-          element={
-            <ProtectedRoute>
-              <Strategies />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/history" 
-          element={
-            <ProtectedRoute>
-              <TradingHistory />
-            </ProtectedRoute>
-          } 
-        />
-      </>
-    )
-  );
+  const router = createBrowserRouter([
+    {
+      path: "/login",
+      element: <Login />
+    },
+    {
+      path: "/register",
+      element: <Register />
+    },
+    {
+      path: "/",
+      element: <ProtectedRoute><Dashboard /></ProtectedRoute>
+    },
+    {
+      path: "/accounts",
+      element: <ProtectedRoute><Accounts /></ProtectedRoute>
+    },
+    {
+      path: "/strategies",
+      element: <ProtectedRoute><Strategies /></ProtectedRoute>
+    },
+    {
+      path: "/history",
+      element: <ProtectedRoute><TradingHistory /></ProtectedRoute>
+    }
+  ]);
 
   return (
     <AuthProvider>
